@@ -1,2 +1,2 @@
 # AI-Study
-Some learning attempts from a AI novice
+Some learning attempts from a AI novice.
