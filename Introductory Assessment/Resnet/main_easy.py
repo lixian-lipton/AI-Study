@@ -26,7 +26,7 @@ model.fc = nn.Linear(num_ftrs, 2)
 model.load_state_dict(torch.load('model_state_dict.pth'))
 model = model.to(device)
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.01)
+optimizer = optim.Adam(model.parameters(), lr=0.0828)
 print("模型已加载！")
 
 # 训练模型
@@ -49,6 +49,8 @@ for epoch in range(num_epochs):
 
         running_loss += loss.item()
     print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {running_loss / len(train_loader):.4f}')
+    torch.save(model.state_dict(), 'model_state_dict.pth')
+    print("本次参数已更新！")
 
 
 torch.save(model.state_dict(), 'model_state_dict.pth')
