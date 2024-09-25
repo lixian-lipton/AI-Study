@@ -2,12 +2,23 @@
 初学者的一些尝试。
 
 
-#Introductory Assessment：
+## Introductory Assessment：
 
-1、Resnet：
-模型：resnet-50
-数据集链接：https://www.kaggle.com/c/dogs-vs-cats-redux-kernels-edition/overview
+### Resnet：
+
+#### 1、模型
+resnet-50(参数存储于model_state_dict.pth)
+#### 2、数据集
+链接：https://www.kaggle.com/c/dogs-vs-cats-redux-kernels-edition/overview 
+
 （注：由于测试集缺少 labels ，因此实际操作时将原训练集的 25000 张图片切分成了 20000 张训练图片和 5000 张测试图片）
-测试结果：
-main_easy 中使用 torchvision 库预训练的 models.resnet50 进行训练，batch size=32，epoch=10，测试准确率为 95.56% 。
-main_diff 中继承 torch 的 Modules 基类进行编写，
+
+#### 3、测试记录
+
+main_easy：（使用 torchvision 内置预训练模型）
+- 首次训练 (lr=0.001, epoch=10) 效果较好，测试准确率 95.56%
+- 由于训练经验不足，后期严重地 overfitting ，训练集准确率 99.99% ，测试集准确率低至 92%
+- 重新训练，并在每个 epoch 结束后都进行了测试，绘制了随训练次数增加，loss和Accuracy的变化图像 （见 easy_result。xlsx）
+- 最终在 95%-96% 之间波动，最高测试准确率 96.82%
+
+main_hard：（使用 Modules 基类自定义模型）
