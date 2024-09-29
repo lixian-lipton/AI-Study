@@ -31,7 +31,7 @@ main_hard：（自行编写，但事先阅读 models.resnet50 的源码学习参
 ### VGG：
 
 #### 1、模型
-vgg-16   (参数存储于model_state_dict.pth)
+vgg-11   (参数存储于model_state_dict.pth)
 #### 2、数据集
 同上
 #### 3、测试记录

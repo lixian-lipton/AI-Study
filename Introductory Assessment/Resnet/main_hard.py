@@ -17,7 +17,7 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 dataset = datasets.ImageFolder(root=data_dir, transform=transform)
-train_loader = DataLoader(dataset, batch_size=16, shuffle=True)
+train_loader = DataLoader(dataset, batch_size=8, shuffle=True)
 device = torch.device('cuda')
 
 # 对自带的 ResNet50 进行微调
@@ -27,11 +27,11 @@ model.fc = nn.Linear(num_ftrs, 2)
 model.load_state_dict(torch.load('hard_model_state_dict.pth')) #####################
 model = model.to(device)
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.0005, weight_decay=0.0002)
 print("模型已加载！")
 
 # 训练模型
-num_epochs = 10
+num_epochs = 50
 for epoch in range(num_epochs):
     model.train()
     running_loss = 0.0

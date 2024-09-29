@@ -20,7 +20,7 @@ train_loader = DataLoader(dataset, batch_size=32, shuffle=True)
 device = torch.device('cuda')
 
 # 对自带的 ResNet50 进行微调
-model = models.vgg16(pretrained=True)
+model = models.vgg11(pretrained=True)
 num_ftrs = model.fc.in_features
 model.fc = nn.Linear(num_ftrs, 2)
 model.load_state_dict(torch.load('easy_model_state_dict.pth')) #####################
