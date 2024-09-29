@@ -25,3 +25,5 @@ main_easy：（使用 torchvision 预训练模型）
 main_hard：（自行编写，但事先阅读 models.resnet50 的源码学习参考）
 - 初始参数：随机初始化
 - 使用 Bottleneck 而非 Basic block
+- 训练一段时间后不再收敛，93-94% 之间震荡长达 60 个 epoch；调整 batch-size 和 lr，效果不佳
+- 
