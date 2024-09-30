@@ -5,25 +5,25 @@ from torchvision import datasets, transforms, models
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-
+# 数据目录
 data_dir = r"C:\Users\lipton\Downloads\dogs-vs-cats-redux-kernels-edition\train"
 test_dir = r"C:\Users\lipton\Downloads\dogs-vs-cats-redux-kernels-edition\test"
 
 # 数据预处理
 transform = transforms.Compose([
-    transforms.Resize((224, 224)),  # ResNet 输入尺寸
+    transforms.Resize((224, 224)),  # VGG 输入尺寸
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 dataset = datasets.ImageFolder(root=data_dir, transform=transform)
 train_loader = DataLoader(dataset, batch_size=32, shuffle=True)
-device = torch.device('cuda')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-# 对自带的 ResNet50 进行微调
-model = models.vgg11(pretrained=True)
-num_ftrs = model.fc.in_features
-model.fc = nn.Linear(num_ftrs, 2)
-model.load_state_dict(torch.load('easy_model_state_dict.pth')) #####################
+# 对自带的 VGG19 进行微调
+model = models.vgg19(pretrained=True)
+num_ftrs = model.classifier[6].in_features
+model.classifier[6] = nn.Linear(num_ftrs, 2)  # 修改最后一层以适应二分类
+# model.load_state_dict(torch.load('vgg-easy_model_state_dict.pth'))  # 加载模型状态字典
 model = model.to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
@@ -42,14 +42,14 @@ for epoch in range(num_epochs):
         outputs = model(images)
         loss = criterion(outputs, labels)
 
-        # 反向传播和
+        # 反向传播和优化
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
 
         running_loss += loss.item()
     print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {running_loss / len(train_loader):.4f}')
-    torch.save(model.state_dict(), 'easy_model_state_dict.pth')
+    torch.save(model.state_dict(), 'vgg-easy_model_state_dict.pth')
     print("本次参数已更新！")
 
     # 测试
@@ -67,7 +67,7 @@ for epoch in range(num_epochs):
     total = 0
 
     with torch.no_grad():
-        for images, labels in tqdm(test_loader, desc=f'Test: ', leave=False):
+        for images, labels in tqdm(test_loader, desc='Test: ', leave=False):
             images, labels = images.to(device), labels.to(device)
 
             # 前向传播

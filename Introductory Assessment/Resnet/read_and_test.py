@@ -9,7 +9,7 @@ model = models.resnet50(pretrained=False)
 num_ftrs = model.fc.in_features
 model.fc = nn.Linear(num_ftrs, 2)
 device = torch.device('cuda')
-model.load_state_dict(torch.load('easy_model_state_dict.pth'))
+model.load_state_dict(torch.load('res-easy_model_state_dict.pth'))
 model = model.to(device)
 
 # 准备测试数据
