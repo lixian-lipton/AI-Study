@@ -6,3 +6,7 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+Introductory Assessment/.venv/
+Introductory Assessment/Resnet/res-easy_model_state_dict.pth
+Introductory Assessment/Resnet/res-hard_model_state_dict.pth
+Introductory Assessment/VGG/vgg-easy_model_state_dict.pth

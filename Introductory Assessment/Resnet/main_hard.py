@@ -7,8 +7,8 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 
-data_dir = r"C:\Users\lipton\Downloads\dogs-vs-cats-redux-kernels-edition\train"
-test_dir = r"C:\Users\lipton\Downloads\dogs-vs-cats-redux-kernels-edition\test"
+data_dir = r"C:\Users\24800\Desktop\AI\cats-vs-dogs\train"
+test_dir = r"C:\Users\24800\Desktop\AI\cats-vs-dogs\test"
 
 # 数据预处理
 transform = transforms.Compose([
@@ -18,16 +18,15 @@ transform = transforms.Compose([
 ])
 dataset = datasets.ImageFolder(root=data_dir, transform=transform)
 train_loader = DataLoader(dataset, batch_size=32, shuffle=True)
-device = torch.device('cuda')
+device = torch.device('cpu')
 
-# 对自带的 ResNet50 进行微调
 model = resnet50()
 num_ftrs = model.fc.in_features
 model.fc = nn.Linear(num_ftrs, 2)
-model.load_state_dict(torch.load('res-hard_model_state_dict.pth')) #####################
+#model.load_state_dict(torch.load('res-hard_model_state_dict.pth')) #####################
 model = model.to(device)
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.00001)
+optimizer = optim.Adam(model.parameters(), lr=0.001)
 print("模型已加载！")
 
 # 训练模型
